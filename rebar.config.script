@@ -36,4 +36,15 @@ Config2 = case os:type() of
         end;
     _ ->
         Config1
-end.
+end,
+
+ Config2 ++ [
+            {plugins, [{pc, "~> master"}]},
+            {artifacts, ["priv/jiffy.so"]},
+            {provider_hooks, [
+                {post, [
+                    {compile, {pc, compile}},
+                    {clean, {pc, clean}}
+                ]}
+            ]}
+].
