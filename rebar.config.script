@@ -36,30 +36,4 @@ Config2 = case os:type() of
         end;
     _ ->
         Config1
-end,
-
-IsRebar2 = case lists:keyfind(rebar, 1, application:loaded_applications()) of
-    {rebar, _Desc, Vsn} ->
-        case string:split(Vsn, ".") of
-            ["2" | _] -> true;
-            _ -> false
-        end;
-    false ->
-        false
-end,
-
-case IsRebar2 of
-    true ->
-        Config2;
-    false ->
-        Config2 ++ [
-            {plugins, [{pc, "~> 1.0"}]},
-            {artifacts, ["priv/jiffy.so"]},
-            {provider_hooks, [
-                {post, [
-                    {compile, {pc, compile}},
-                    {clean, {pc, clean}}
-                ]}
-            ]}
-        ]
 end.
